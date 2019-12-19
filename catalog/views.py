@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book, Author, BookInstance, Genre
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -13,7 +13,6 @@ from catalog.forms import RenewBookForm
 
 
 # Create your views here.
-@login_required
 def index(request):
     """view function for the index page"""
 
@@ -146,5 +145,22 @@ class BookDelete(PermissionRequiredMixin,DeleteView):
     permission_required = 'catalog.can_mark_returned'
     model = Book
     success_url = reverse_lazy('books')
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'catalog/signup.html', {'form': form})  
 
 
