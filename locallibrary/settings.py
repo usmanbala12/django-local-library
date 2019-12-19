@@ -25,7 +25,7 @@ SECRET_KEY = '63bs@wmd74ohgps#vwr=^kjt--$gy--a#8ad*b6%sa7=k4i$49'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shrouded-river-70186.herokuapp.com']
 
 
 # Application definition
